@@ -36,11 +36,11 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
         </ImageWrapper>
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && (
+          <NewFlag>Just released!</NewFlag>
+        )}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -69,19 +69,47 @@ const ShoeCard = ({
 };
 
 const Link = styled.a`
+  --hover-timing: 250ms;
+  --mouseout-timing: 100ms;
   text-decoration: none;
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+  will-change: transform;
+  transition: transform 50ms;
+  perspective: 5000px;
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${Link}:hover & {
+      transform: rotateZ(-5deg);
+    }
+  }
+`;
 
 const ImageWrapper = styled.div`
-  position: relative;
+  border-radius: 16px 16px 4px 4px;
+  overflow: hidden;
 `;
 
 const Image = styled.img`
+  display: block;
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
+  will-change: transform;
+  transition: transform var(--mouseout-timing);
+  filter: grayscale(20%);
+
+  ${Link}:hover & {
+    filter: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    ${Link}:hover & {
+      transform: scale(1.1) translateY(-3%);
+      transition: transform var(--hover-timing);
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -121,6 +149,17 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+  will-change: transform;
+  transition: transform var(--hover-timing);
+  transition-delay: var(--hover-timing);
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${Link}:hover & {
+      transform: rotate(5deg);
+      transition: transform var(--hover-timing);
+      transition-delay: var(--hover-timing);
+    }
+  }
 `;
 
 const SaleFlag = styled(Flag)`
