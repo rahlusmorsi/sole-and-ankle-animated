@@ -20,12 +20,12 @@ const Header = () => {
           <Logo />
         </LogoWrapper>
         <DesktopNav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLinkGroup href="/sale">Sale</NavLinkGroup>
+          <NavLinkGroup href="/new">New&nbsp;Releases</NavLinkGroup>
+          <NavLinkGroup href="/men">Men</NavLinkGroup>
+          <NavLinkGroup href="/women">Women</NavLinkGroup>
+          <NavLinkGroup href="/kids">Kids</NavLinkGroup>
+          <NavLinkGroup href="/collections">Collections</NavLinkGroup>
         </DesktopNav>
         <MobileActions>
           <ShoppingBagButton>
@@ -76,6 +76,10 @@ const DesktopNav = styled.nav`
   gap: clamp(1rem, 9.2vw - 4.5rem, 3.5rem);
   margin: 0px 48px;
 
+  /* hover nav effect */
+  position: relative;
+  overflow: hidden;
+
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
@@ -120,10 +124,37 @@ const NavLink = styled.a`
   text-decoration: none;
   color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
+  will-change: transform;
+  transition: transform 300ms;
 
   &:first-of-type {
     color: var(--color-secondary);
   }
+
+  &:hover {
+    transform: translateY(-100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform 150ms;
+  }
+`;
+
+const NavLinkGroup = (props) => {
+  return (
+    <NavLink href={props.href}>
+      {props.children}
+      <NavLinkEffect>
+        {props.children}
+      </NavLinkEffect>
+    </NavLink>
+  );
+};
+
+const NavLinkEffect = styled.span`
+  font-weight: ${WEIGHTS.bold};
+  display: block;
+  position: absolute;
 `;
 
 export default Header;
